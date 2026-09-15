@@ -85,7 +85,7 @@ export default function Signup() {
                                 to="/"
                                 className="font-archivo text-xl font-black tracking-tight text-slate-950"
                             >
-                                MujShoppers
+                                mujshoppers
                             </Link>
 
                             <p className="text-sm text-slate-500">
@@ -106,7 +106,7 @@ export default function Signup() {
                             </h1>
 
                             <p className="mt-3 max-w-md text-sm leading-6 text-slate-500 sm:text-base">
-                                Join students buying and selling in your campus.
+                                Join students buying and selling around your campus.
                             </p>
                         </div>
 
@@ -240,7 +240,7 @@ export default function Signup() {
                                     <option value="2">2nd Year</option>
                                     <option value="3">3rd Year</option>
                                     <option value="4">4th Year</option>
-                                    <option value="5">Higher</option>
+                                    <option value="5">5th Year</option>
                                 </select>
 
                             </div>
@@ -301,17 +301,17 @@ export default function Signup() {
                     <section className="relative hidden min-h-[680px] bg-[#f4f6ec] p-8 lg:flex lg:items-center lg:justify-center">
                         <div className="absolute left-8 top-8">
                             <p className="text-sm font-medium text-slate-500">
-                                Discover more.
+                                Same campus.
                             </p>
 
                             <p className="text-lg font-bold text-slate-950">
-                                Spend less.
+                                More possibilities.
                             </p>
                         </div>
 
                         <img
                             src="/illustrations/signup.png"
-                            alt="Student joining MujShoppers"
+                            alt="Student joining mujshoppers"
                             className="relative z-10 max-h-[590px] w-full object-contain"
                         />
 

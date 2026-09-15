@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import {
     ArrowRight,
     Check,
@@ -10,8 +10,12 @@ import {
     Upload,
     User,
     X,
+    AlertCircle,
+    Loader2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { createProduct } from "../api/products";
 
 const categories = [
     "Electronics",
@@ -32,8 +36,11 @@ const conditions = [
 
 export default function SellItem() {
     const navigate = useNavigate();
+    const { user, isLoggedIn } = useAuth();
     const fileInputRef = useRef(null);
 
+    const [submitting, setSubmitting] = useState(false);
+    const [serverError, setServerError] = useState("");
     const [images, setImages] = useState([]);
 
     const [formData, setFormData] = useState({
@@ -128,20 +135,48 @@ export default function SellItem() {
     // SUBMIT
     // --------------------------------
 
-    const handleReview = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!isFormValid) {
+        if (!isLoggedIn) {
+            navigate("/login");
             return;
         }
 
-        console.log("Listing:", {
-            ...formData,
-            images,
-        });
+        if (!isFormValid || submitting) {
+            return;
+        }
 
-        // Backend connection will be added here.
-        alert("Review step coming next!");
+        setSubmitting(true);
+        setServerError("");
+
+        try {
+            const data = new FormData();
+            data.append("title", formData.title.trim());
+            data.append("description", formData.description.trim());
+            data.append("price", formData.price);
+            data.append("category", formData.category);
+            data.append("condition", formData.condition);
+            data.append("college", formData.college || user?.college || "Manipal University Jaipur");
+
+            images.forEach((img) => {
+                if (img.file) {
+                    data.append("images", img.file);
+                }
+            });
+
+            const res = await createProduct(data);
+            if (res.product?._id) {
+                navigate(`/product/${res.product._id}`);
+            } else {
+                navigate("/shop");
+            }
+        } catch (err) {
+            console.error("Product creation failed:", err);
+            setServerError(err.message || "Failed to publish listing. Please check your details and try again.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -275,9 +310,29 @@ export default function SellItem() {
           ====================================== */}
 
                     <form
-                        onSubmit={handleReview}
+                        onSubmit={handleSubmit}
                         className="rounded-[28px] border border-[#EBE6CE] bg-[#FFFDF2] p-5 shadow-sm sm:p-7 lg:p-8"
                     >
+
+                        {serverError && (
+                            <div className="mb-6 flex items-center gap-2.5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-600">
+                                <AlertCircle size={18} className="shrink-0" />
+                                <span>{serverError}</span>
+                            </div>
+                        )}
+
+                        {!isLoggedIn && (
+                            <div className="mb-6 flex items-center justify-between rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-medium text-amber-800">
+                                <span>You must be logged in to create a listing.</span>
+                                <button
+                                    type="button"
+                                    onClick={() => navigate("/login")}
+                                    className="font-bold underline text-amber-900"
+                                >
+                                    Log in now
+                                </button>
+                            </div>
+                        )}
 
                         <div className="mb-7">
                             <h2 className="font-archivo text-2xl font-black text-slate-950">
@@ -655,11 +710,20 @@ export default function SellItem() {
 
                             <button
                                 type="submit"
-                                disabled={!isFormValid}
+                                disabled={!isFormValid || submitting}
                                 className="flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-7 text-sm font-bold text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-emerald-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
                             >
-                                Next: Review Listing
-                                <ArrowRight size={17} />
+                                {submitting ? (
+                                    <>
+                                        <Loader2 size={17} className="animate-spin" />
+                                        Publishing Listing...
+                                    </>
+                                ) : (
+                                    <>
+                                        Publish Listing
+                                        <ArrowRight size={17} />
+                                    </>
+                                )}
                             </button>
 
                         </div>
@@ -757,13 +821,13 @@ export default function SellItem() {
 
                                         <div className="min-w-0">
                                             <p className="text-sm font-bold text-slate-900">
-                                                Your Name
+                                                {user?.name || "Your Name"}
                                             </p>
 
                                             <div className="mt-0.5 flex items-center gap-1 text-xs text-slate-400">
                                                 <MapPin size={12} />
                                                 <span className="truncate">
-                                                    {formData.college}
+                                                    {formData.college || user?.college || "Manipal University Jaipur"}
                                                 </span>
                                             </div>
                                         </div>
@@ -788,7 +852,7 @@ export default function SellItem() {
                                         </p>
 
                                         <p className="mt-1 text-xs leading-5 text-emerald-700/80">
-                                            Our campus community keeps buying and selling.
+                                            Our campus community keeps buying and selling safe.
                                             Be honest and stay safe!
                                         </p>
                                     </div>

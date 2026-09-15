@@ -15,6 +15,8 @@ import SellItem from "./pages/SellItem";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
+import ProductDetails from "./pages/ProductDetails";
+import EditProduct from "./pages/EditProduct";
 import Footer from "./components/Footer";
 
 import Lenis from "lenis";
@@ -36,11 +38,9 @@ function Home() {
 
 function App() {
   useEffect(() => {
-    // Initialize Lenis smooth scroll
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) =>
-        Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
@@ -48,17 +48,13 @@ function App() {
       touchMultiplier: 1.5,
     });
 
-    // Synchronize ScrollTrigger with Lenis
     lenis.on("scroll", ScrollTrigger.update);
 
-    // Add Lenis to GSAP ticker
     const updateLenis = (time) => {
       lenis.raf(time * 1000);
     };
 
     gsap.ticker.add(updateLenis);
-
-    // Disable lag smoothing
     gsap.ticker.lagSmoothing(0);
 
     return () => {
@@ -71,37 +67,36 @@ function App() {
     <BrowserRouter>
       <div className="min-h-screen bg-[#FDFBF0] flex flex-col font-sans text-slate-800 antialiased">
 
-        {/* Navbar stays on every page */}
         <Navbar />
 
         <main className="flex-grow">
-
           <Routes>
-
             {/* Home */}
             <Route path="/" element={<Home />} />
 
             {/* Shop */}
             <Route path="/shop" element={<Shop />} />
 
-            {/* Login */}
-            <Route path="/login" element={<Login />} />
+            {/* Product Details */}
+            <Route path="/product/:id" element={<ProductDetails />} />
 
-            {/* Signup */}
+            {/* Edit Product (seller only) */}
+            <Route path="/edit-product/:id" element={<EditProduct />} />
+
+            {/* Auth */}
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
 
-            {/* Sell Item */}
+            {/* Sell */}
             <Route path="/sell" element={<SellItem />} />
 
-            {/* Sell Item */}
+            {/* Profile */}
             <Route path="/profile" element={<Profile />} />
 
+            {/* Cart & Wishlist */}
             <Route path="/cart" element={<Cart />} />
-
-            <Route path="/wishlist" element={<Wishlist />}/>
-
+            <Route path="/wishlist" element={<Wishlist />} />
           </Routes>
-
         </main>
 
         <Footer />

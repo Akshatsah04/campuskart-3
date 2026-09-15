@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 import ShopSearch from "../components/ShopSearch";
 import ShopPromotion from "../components/ShopPromotion";
@@ -34,7 +35,7 @@ export default function Shop() {
 
         const data = await getProducts();
 
-        setProducts(data);
+        setProducts(data.products || []);
       } catch (err) {
         console.error(err);
         setError("Unable to load products.");
@@ -147,10 +148,8 @@ export default function Shop() {
       <ShopCategories />
 
       {loading ? (
-        <section className="px-4 py-16 text-center">
-          <p className="text-slate-500">
-            Loading products...
-          </p>
+        <section className="flex items-center justify-center px-4 py-24">
+          <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
         </section>
       ) : error ? (
         <section className="px-4 py-16 text-center">

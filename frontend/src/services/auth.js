@@ -1,9 +1,8 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 // ================================
 // LOGIN
 // ================================
-
 export async function loginUser(credentials) {
   const response = await fetch(`${API_URL}/users/login`, {
     method: "POST",
@@ -22,11 +21,9 @@ export async function loginUser(credentials) {
   return data;
 }
 
-
 // ================================
 // REGISTER
 // ================================
-
 export async function registerUser(userData) {
   const response = await fetch(`${API_URL}/users/register`, {
     method: "POST",
@@ -45,11 +42,9 @@ export async function registerUser(userData) {
   return data;
 }
 
-
 // ================================
 // CURRENT USER
 // ================================
-
 export async function getCurrentUser(token) {
   const response = await fetch(`${API_URL}/users/me`, {
     method: "GET",

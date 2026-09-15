@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
 
+const imageSchema = new mongoose.Schema(
+    {
+        url: {
+            type: String,
+            required: true
+        },
+        publicId: {
+            type: String,
+            default: ""
+        }
+    },
+    { _id: false }
+);
+
 const productSchema = new mongoose.Schema(
     {
         title: {
@@ -40,7 +54,7 @@ const productSchema = new mongoose.Schema(
         },
 
         images: {
-            type: [String],
+            type: [imageSchema],
             default: []
         },
 
@@ -66,6 +80,15 @@ const productSchema = new mongoose.Schema(
         timestamps: true
     }
 );
+
+// Indexes for fast searching and filtering
+productSchema.index({ title: "text", description: "text" });
+productSchema.index({ category: 1 });
+productSchema.index({ college: 1 });
+productSchema.index({ status: 1 });
+productSchema.index({ price: 1 });
+productSchema.index({ seller: 1 });
+productSchema.index({ createdAt: -1 });
 
 const Product = mongoose.model("Product", productSchema);
 
