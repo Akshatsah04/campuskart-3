@@ -4,9 +4,29 @@ import jwt from "jsonwebtoken";
 
 export const createUser = async (req, res) => {
     try {
-        const { name,email,password,college,branch,year,phone} = req.body;
+        const {
+            name,
+            email,
+            password,
+            college,
+            branch,
+            year,
+            phone
+        } = req.body;
+
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(409).json({
+                message: "An account with this email already exists"
+            });
+        }
+
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Create user
         const user = await User.create({
             name,
             email,
@@ -17,8 +37,17 @@ export const createUser = async (req, res) => {
             phone
         });
 
+        // Create JWT
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
+        );
+
+        // Send response
         res.status(201).json({
             message: "User created successfully",
+            token,
             user: {
                 id: user._id,
                 name: user.name,
@@ -30,6 +59,7 @@ export const createUser = async (req, res) => {
                 profilePic: user.profilePic
             }
         });
+
     } catch (error) {
         res.status(500).json({
             message: "Failed to create user",
@@ -37,7 +67,6 @@ export const createUser = async (req, res) => {
         });
     }
 };
-
 
 
 

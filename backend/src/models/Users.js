@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema(
 
         college: {
             type: String,
-            required: true,
-            trim: true
+            trim: true,
+            default: "Manipal University Jaipur"
         },
 
         branch: {

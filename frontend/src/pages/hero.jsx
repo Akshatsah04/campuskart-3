@@ -13,7 +13,7 @@ export default function Hero() {
       id: 1,
       title: "Clothing",
       gradient: "from-[#8B5CF6] to-[#6366F1]", // Purple to Indigo
-      image:"/categories/clothing.PNG",
+      image: "/categories/clothing.PNG",
     },
     {
       id: 2,
@@ -25,38 +25,38 @@ export default function Hero() {
         arrowColor: "border-t-[#2563EB]",
         animation: "animate-float"
       },
-      image:"/categories/electronics.PNG",
+      image: "/categories/electronics.PNG",
     },
     {
       id: 3,
       title: "Furniture",
       gradient: "from-[#F59E0B] to-[#EF4444]", // Amber to Red
-      image:"/categories/furniture.PNG",
+      image: "/categories/furniture.PNG",
     },
     {
       id: 4,
       title: "Stationary",
       gradient: "from-[#EC4899] to-[#F43F5E]", // Pink to Rose
-      image:"/categories/stationary.PNG",
- 
+      image: "/categories/stationary.PNG",
+
     },
     {
       id: 5,
       title: "Textbooks",
-      gradient: "from-[#10B981] to-[#14B8A6]", // Emerald to Teal
+      gradient: "from-[#556B2F] to-[#7B9A42]", // Dark Olive Green
       tag: {
         text: "@andrea",
-        color: "bg-[#10B981]", // Green tag
-        arrowColor: "border-t-[#10B981]",
+        color: "bg-[#556B2F]", // Olive tag
+        arrowColor: "border-t-[#556B2F]",
         animation: "animate-float-delayed"
       },
-      image:"/categories/textbooks.PNG",
+      image: "/categories/textbooks.PNG",
     },
     {
       id: 6,
       title: "Others",
-      gradient: "from-[#10B981] to-[#14B8A6]", // Emerald to Teal
-      image:"/categories/others.PNG",
+      gradient: "from-[#556B2F] to-[#7B9A42]", // Dark Olive Green
+      image: "/categories/others.PNG",
     }
   ];
 
@@ -65,14 +65,14 @@ export default function Hero() {
       const cardsEl = gsap.utils.toArray('.hero-card');
       const tagsEl = gsap.utils.toArray('.hero-tag');
       const detailsEl = gsap.utils.toArray('.card-details');
-      
+
       const heroHeaderEl = '.hero-header';
       const catalogHeaderEl = '.catalog-header';
       const catalogFooterEl = '.catalog-footer';
 
-      const clusterOffsets = [110, 55, 0, -55, -110 , -165];
-      const clusterOffsets2 = [-225, -135, -45, 45 , 135 , 225];
-      const finalRotations = [-12, -6, -1, 4, 10 , 15];
+      const clusterOffsets = [110, 55, 0, -55, -110, -165];
+      const clusterOffsets2 = [-225, -135, -45, 45, 135, 225];
+      const finalRotations = [-12, -6, -1, 4, 10, 15];
 
       // 1. Initial State configuration (cards are hidden off-screen bottom)
       gsap.set(cardsEl, {
@@ -131,7 +131,7 @@ export default function Hero() {
             x: (i) => clusterOffsets2[i],
             rotation: 0,
             duration: 0.7,
-            scale:1.1,
+            scale: 1.1,
             ease: 'power2.inOut',
           }, '-=0.2')
           // Step C: Fade and slide in the Catalog Header ("Best Selling Campus Items")
@@ -200,127 +200,127 @@ export default function Hero() {
   }, []);
 
   return (
-<>
-    <div 
-      ref={containerRef}
-      className="relative bg-[#FAFAF9]"
-    >
-      {/* Pinned Viewport Section */}
-      <section 
-        ref={pinnedSectionRef}
-        className="hero-pinned-section sticky top-[72px] z-10 w-full h-[calc(100vh-72px)] flex flex-col items-center justify-between px-4 py-8 overflow-hidden"
+    <>
+      <div
+        ref={containerRef}
+        className="relative bg-[#FDFBF0]"
       >
-        {/* Subtle paper grain overlay / grid details */}
-        <div className="absolute inset-0 bg-[radial-gradient(#E2E8F0_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
+        {/* Pinned Viewport Section */}
+        <section
+          ref={pinnedSectionRef}
+          className="hero-pinned-section sticky top-[72px] z-10 w-full h-[calc(100vh-72px)] flex flex-col items-center justify-between px-4 py-8 overflow-hidden"
+        >
+          {/* Subtle paper grain overlay / grid details */}
+          <div className="absolute inset-0 bg-[radial-gradient(#E2E8F0_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
 
-        <div className="mx-auto max-w-7xl w-full flex flex-col items-center text-center relative z-10 h-full justify-between py-2">
-          
-          {/* Header Container Area - holds both overlapping headers */}
-          <div className="relative w-full flex items-center justify-center min-h-[90px] mt-2">
-            
-            {/* Header Group A: Hero Title */}
-            <div className="hero-header w-full absolute top-0 flex flex-col items-center">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111111] tracking-tight leading-[1.08] max-w-4xl px-2">
-                Find the perfect <br className="hidden sm:inline" />
-                Campus Items
-              </h1>
+          <div className="mx-auto max-w-7xl w-full flex flex-col items-center text-center relative z-10 h-full justify-between py-2">
+
+            {/* Header Container Area - holds both overlapping headers */}
+            <div className="relative w-full flex items-center justify-center min-h-[90px] mt-2">
+
+              {/* Header Group A: Hero Title */}
+              <div className="hero-header w-full absolute top-0 flex flex-col items-center">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111111] tracking-tight leading-[1.08] max-w-4xl px-2">
+                  Find the perfect <br className="hidden sm:inline" />
+                  Campus Items
+                </h1>
+              </div>
+
+              {/* Header Group B: Catalog Title (Fades in on scroll) */}
+              <div className="catalog-header w-full absolute top-10 flex flex-col items-center pointer-events-none">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#111111] tracking-tight leading-tight">
+                  Best Selling Products
+                </h2>
+                <p className="text-slate-400 text-xs sm:text-sm font-semibold mt-1.5 uppercase tracking-widest">
+                  verified student listings
+                </p>
+              </div>
+
             </div>
 
-            {/* Header Group B: Catalog Title (Fades in on scroll) */}
-            <div className="catalog-header w-full absolute top-10 flex flex-col items-center pointer-events-none">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#111111] tracking-tight leading-tight">
-                Best Selling Products
-              </h2>
-              <p className="text-slate-400 text-xs sm:text-sm font-semibold mt-1.5 uppercase tracking-widest">
-                verified student listings
-              </p>
-            </div>
-
-          </div>
-
-          {/* Cards Row - remains pinned in center */}
-          <div className="relative w-full max-w-5xl h-[34vh] min-h-[220px] max-h-[360px] flex items-center justify-center select-none">
-            <div className="flex -space-x-10 sm:-space-x-12 md:-space-x-16 items-center justify-center">
-              {cards.map((card) => (
-                <div
-                  key={card.id}
-                  className="hero-card flex flex-col items-center relative hover:z-10"
-                >
-                  {/* Float speech bubble tag (Aesthetics tag) */}
-                  {card.tag && (
-                    <div className={`hero-tag absolute -top-10 left-1/3 -translate-x-1/2 z-20 ${card.tag.animation}`}>
-                      <div className={`${card.tag.color} text-white text-[9px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm whitespace-nowrap relative`}>
-                        {card.tag.text}
-                        {/* Triangle pointer */}
-                        <div className={`absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] ${card.tag.arrowColor}`} />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Inner Card - handles graphics and hovers */}
+            {/* Cards Row - remains pinned in center */}
+            <div className="relative w-full max-w-5xl h-[34vh] min-h-[220px] max-h-[360px] flex items-center justify-center select-none">
+              <div className="flex -space-x-10 sm:-space-x-12 md:-space-x-16 items-center justify-center">
+                {cards.map((card) => (
                   <div
-                    className={`w-[22vh] h-[30vh] min-w-[120px] min-h-[160px] max-w-[185px] max-h-[250px] rounded-[20px] sm:rounded-[26px] bg-gradient-to-br ${card.gradient} flex flex-col justify-between shadow-lg shadow-slate-900/8 transition-all duration-300 ease-out cursor-pointer hover:shadow-xl hover:shadow-slate-950/15 hover:scale-105 hover:-translate-y-3`}
+                    key={card.id}
+                    className="hero-card flex flex-col items-center relative hover:z-10"
                   >
-                    <img
-                      src={card.image}
-                      alt={card.title}
-                      className="object-contain drop-shadow-2xl rounded-xl"
-                    />
+                    {/* Float speech bubble tag (Aesthetics tag) */}
+                    {card.tag && (
+                      <div className={`hero-tag absolute -top-10 left-1/3 -translate-x-1/2 z-20 ${card.tag.animation}`}>
+                        <div className={`${card.tag.color} text-white text-[9px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm whitespace-nowrap relative`}>
+                          {card.tag.text}
+                          {/* Triangle pointer */}
+                          <div className={`absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] ${card.tag.arrowColor}`} />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Inner Card - handles graphics and hovers */}
+                    <div
+                      className={`w-[22vh] h-[30vh] min-w-[120px] min-h-[160px] max-w-[185px] max-h-[250px] rounded-[20px] sm:rounded-[26px] bg-gradient-to-br ${card.gradient} flex flex-col justify-between shadow-lg shadow-slate-900/8 transition-all duration-300 ease-out cursor-pointer hover:shadow-xl hover:shadow-slate-950/15 hover:scale-105 hover:-translate-y-3`}
+                    >
+                      <img
+                        src={card.image}
+                        alt={card.title}
+                        className="object-contain drop-shadow-2xl rounded-xl"
+                      />
+                    </div>
+
+                    {/* Product Catalog Details (fades in under cards on scroll) */}
+                    <div className="card-details absolute top-full mt-10 flex flex-col items-center pointer-events-none">
+                      <span className="text-[12px] font-extrabold text-slate-800 tracking-wide truncate max-w-[130px]">
+                        {card.title}
+                      </span>
+                    </div>
+
                   </div>
-
-                  {/* Product Catalog Details (fades in under cards on scroll) */}
-                  <div className="card-details absolute top-full mt-10 flex flex-col items-center pointer-events-none">
-                    <span className="text-[12px] font-extrabold text-slate-800 tracking-wide truncate max-w-[130px]">
-                      {card.title}
-                    </span>
-                  </div>
-
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Footer Area - holds both overlapping footers */}
-          <div className="relative w-full flex items-center justify-center min-h-[90px] mb-2">
-
-            {/* Footer A: Hero subtext and CTA buttons */}
-            <div className="hero-header w-full absolute bottom-10 flex flex-col items-center gap-4">
-              <p className="max-w-xl text-xs sm:text-sm md:text-base text-slate-500 font-semibold leading-relaxed px-4">
-                Buy, sell, and rent everything you need for your campus life.<br className="hidden sm:inline" />
-                Whether it is textbooks, electronics, furniture & more.
-              </p>
-              <div className="flex items-center gap-3">
-                <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-6 py-3 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300">
-                  Start Exploring
-                </button>
-                <button className="cursor-pointer rounded-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs sm:text-sm font-bold px-6 py-3 shadow-sm transition-all duration-300">
-                  List an item
-                </button>
+                ))}
               </div>
             </div>
 
-            {/* Footer B: Catalog "Explore More" button (Fades in on scroll) */}
-            <div className="catalog-footer w-full absolute bottom-10 flex flex-col items-center pointer-events-none">
-              <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
-                Explore More Products
-              </button>
+            {/* Footer Area - holds both overlapping footers */}
+            <div className="relative w-full flex items-center justify-center min-h-[90px] mb-2">
+
+              {/* Footer A: Hero subtext and CTA buttons */}
+              <div className="hero-header w-full absolute bottom-10 flex flex-col items-center gap-4">
+                <p className="max-w-xl text-xs sm:text-sm md:text-base text-slate-500 font-semibold leading-relaxed px-4">
+                  Buy, sell, and rent everything you need for your campus life.<br className="hidden sm:inline" />
+                  Whether it is textbooks, electronics, furniture & more.
+                </p>
+                <div className="flex items-center gap-3">
+                  <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-6 py-3 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300">
+                    Start Exploring
+                  </button>
+                  <button className="cursor-pointer rounded-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs sm:text-sm font-bold px-6 py-3 shadow-sm transition-all duration-300">
+                    List an item
+                  </button>
+                </div>
+              </div>
+
+              {/* Footer B: Catalog "Explore More" button (Fades in on scroll) */}
+              <div className="catalog-footer w-full absolute bottom-10 flex flex-col items-center pointer-events-none">
+                <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
+                  Explore More Products
+                </button>
+              </div>
+
             </div>
 
           </div>
+        </section>
 
-        </div>
-      </section>
+        {/* Scroll Runway Spacer - gives ScrollTrigger height to scrub through */}
+        <div className="h-[100vh] pointer-events-none" />
 
-      {/* Scroll Runway Spacer - gives ScrollTrigger height to scrub through */}
-      <div className="h-[100vh] pointer-events-none" />
 
-      
-    </div>
-    {/* ============================================================
+      </div>
+      {/* ============================================================
           SOCIAL PROOF SECTION — "Built for Students. Trusted Across Campus."
           Appears naturally after the scroll animation runway ends.
       ============================================================ */}
-      <section className="relative bg-white border-t border-slate-100 py-16 px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-[#FFFDF2] border-t border-[#EBE6CE] py-16 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl h-100vh">
 
           {/* Section Header */}
@@ -338,7 +338,7 @@ export default function Hero() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
             {/* Card 1 — Growing Community */}
-            <div className="bg-green-50/50 rounded-2xl border border-gray-300 p-6 flex flex-col justify-between Zshadow-sm">
+            <div className="bg-[#f4f6ec] rounded-2xl border border-[#DCD6B8] p-6 flex flex-col justify-between shadow-sm">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-15 h-15 rounded-[3000px] bg-emerald-100 flex items-center justify-center">
                   <svg className="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -391,7 +391,7 @@ export default function Hero() {
             </div>
 
             {/* Card 2 — 500+ Products Listed */}
-            <div className="bg-gradient-to-t from-green-100 via-white via-30% to-white rounded-2xl border border-gray-300 p-6 flex flex-col justify-between shadow-sm">
+            <div className="bg-gradient-to-t from-[#e5ebb8] via-[#FFFDF2] via-30% to-[#FFFDF2] rounded-2xl border border-[#DCD6B8] p-6 flex flex-col justify-between shadow-sm">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-15 h-15 mb-4 rounded-[3000px] bg-emerald-100 flex items-center justify-center">
                   <svg className="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -484,6 +484,6 @@ export default function Hero() {
 
         </div>
       </section>
-</>
+    </>
   );
 }

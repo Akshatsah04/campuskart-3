@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -5,6 +7,52 @@
   --animate-bounce-slow: bounce 3s infinite;
   --animate-float: float 4s ease-in-out infinite;
   --animate-float-delayed: float-delayed 4s ease-in-out infinite;
+
+  /* Dark Olive Green theme overrides for Tailwind utility classes */
+  --color-emerald-50: #f4f6ec;
+  --color-emerald-100: #e5ebb8;
+  --color-emerald-200: #d4e090;
+  --color-emerald-300: #b3c965;
+  --color-emerald-400: #8ba53e;
+  --color-emerald-500: #6b8535;
+  --color-emerald-600: #556B2F;
+  /* Dark Olive Green */
+  --color-emerald-700: #425424;
+  --color-emerald-800: #33421c;
+  --color-emerald-900: #263315;
+  --color-emerald-950: #141b0b;
+
+  --color-green-50: #f4f6ec;
+  --color-green-100: #e5ebb8;
+  --color-green-200: #d4e090;
+  --color-green-300: #b3c965;
+  --color-green-400: #8ba53e;
+  --color-green-500: #6b8535;
+  --color-green-600: #556B2F;
+  --color-green-700: #425424;
+  --color-green-800: #33421c;
+
+  --color-teal-500: #6b8535;
+  --color-teal-600: #556B2F;
+  --color-teal-700: #425424;
+
+  /* Cream theme tokens */
+  --color-cream-50: #FFFDF5;
+  --color-cream-100: #FFFDD0;
+  /* User Requested Cream */
+  --color-cream-200: #F8F5BE;
+  --color-cream-300: #F1EB9B;
+  --color-cream-400: #E6DC7B;
+  --color-cream-500: #D8C74D;
+
+  /* Custom Olive palette */
+  --color-olive-50: #f4f6ec;
+  --color-olive-100: #e5ebb8;
+  --color-olive-200: #d4e090;
+  --color-olive-500: #6b8535;
+  --color-olive-600: #556B2F;
+  --color-olive-700: #425424;
+  --color-olive-800: #33421c;
 }
 
 @keyframes float {
@@ -29,4 +77,8 @@
   50% {
     transform: translateY(-8px);
   }
+}
+
+.font-archivo {
+  font-family: "Archivo", sans-serif;
 }

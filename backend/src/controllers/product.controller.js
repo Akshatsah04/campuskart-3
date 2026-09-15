@@ -1,5 +1,6 @@
 import Product from "../models/product.js";
 import User from "../models/Users.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const createProduct = async (req, res) => {
     try {
@@ -11,7 +12,6 @@ export const createProduct = async (req, res) => {
             condition
         } = req.body;
 
-        // Find the logged-in user
         const user = await User.findById(req.userId);
 
         if (!user) {
@@ -20,14 +20,24 @@ export const createProduct = async (req, res) => {
             });
         }
 
-        // Create the product
+        // Upload images to Cloudinary
+        const imageUrls = [];
+
+        if (req.files && req.files.length > 0) {
+            for (const file of req.files) {
+                const result = await uploadToCloudinary(file.buffer);
+
+                imageUrls.push(result.secure_url);
+            }
+        }
+
         const product = await Product.create({
             title,
             description,
             price,
             category,
             condition,
-
+            images: imageUrls,
             seller: req.userId,
             college: user.college
         });

@@ -5,10 +5,11 @@ import { createProduct, getProducts, getProductById, updateProduct, deleteProduc
 import { protect } from "../middlewares/auth.middleware.js";
 import { createProductValidator } from "../validators/product.validator.js";
 import { validate } from "../middlewares/validation.middleware.js";
+import upload from "../middlewares/upload.middleware.js";
 
 const router = express.Router();
 
-router.post("/", protect, createProductValidator, validate, createProduct);
+router.post("/", protect, upload.array("images", 5), createProductValidator, validate, createProduct);
 router.get("/", getProducts);
 router.get("/:id", getProductById);
 router.put("/:id", protect, updateProduct);
