@@ -788,7 +788,7 @@ export default function SellItem() {
                                         </p>
 
                                         <p className="mt-1 text-xs leading-5 text-emerald-700/80">
-                                            Our campus community keeps buying and selling safe.
+                                            Our campus community keeps buying and selling.
                                             Be honest and stay safe!
                                         </p>
                                     </div>
