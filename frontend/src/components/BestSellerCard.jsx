@@ -26,7 +26,7 @@ export default function BestSellerCard({ product, isActive }) {
       {/* Product Image */}
       <div className="relative my-4 flex h-44 sm:h-52 w-full items-center justify-center">
         <img
-          src={product.image}
+          src={product.images?.[0]?.url}
           alt={product.name}
           draggable="false"
           className="h-full w-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-105"
@@ -43,7 +43,7 @@ export default function BestSellerCard({ product, isActive }) {
       {/* Product Details */}
       <div className="text-left">
         <h3 className="text-xl sm:text-2xl font-bold leading-tight text-slate-900 line-clamp-1">
-          {product.name}
+          {product.title}
         </h3>
 
         <p className="mt-1 min-h-[38px] text-xs sm:text-sm font-medium leading-relaxed text-slate-500 line-clamp-2">
@@ -51,16 +51,16 @@ export default function BestSellerCard({ product, isActive }) {
         </p>
 
         {/* Rating */}
-        <div className="mt-2 flex items-center gap-1 text-xs font-semibold text-slate-600">
+        {/* <div className="mt-2 flex items-center gap-1 text-xs font-semibold text-slate-600">
           <span className="text-amber-500">★</span>
           <span>{product.rating}</span>
           <span className="text-slate-400">({product.reviewsCount || 89})</span>
-        </div>
+        </div> */}
 
         {/* Bottom Price + CTA */}
         <div className="mt-5 flex items-center justify-between gap-3">
           <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
-            {product.price}
+            ₹{Number(product.price).toLocaleString("en-IN")}
           </span>
 
           {isActive ? (

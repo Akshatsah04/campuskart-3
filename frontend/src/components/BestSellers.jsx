@@ -188,8 +188,15 @@ export default function BestSellers() {
       if (!cards.length) return;
 
       const sp = spacingRef.current;
-      const initialX = getXForIndex(activeIndexRef.current, sp);
+
+      // Start with the first available product centered
+      activeIndexRef.current = 0;
+      setActiveIndex(0);
+
+      const initialX = getXForIndex(0, sp);
+
       currentXRef.current = initialX;
+
       gsap.set(track, { x: initialX });
       updateCards(initialX, sp);
 
@@ -275,7 +282,7 @@ export default function BestSellers() {
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [featuredProducts.length]);
 
   return (
     <section
