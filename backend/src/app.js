@@ -19,12 +19,25 @@ app.use(helmet({
 }));
 
 // CORS configuration supporting environment variable
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://mujshoppers.vercel.app",
+];
+
 app.use(
-    cors({
-        origin: allowedOrigin,
-        credentials: true
-    })
+cors({
+origin: (origin, callback) => {
+// Allow requests without an Origin header, such as server-to-server requests.
+if (!origin || allowedOrigins.includes(origin)) {
+return callback(null, true);
+}
+
+        return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+})
+
 );
 
 // Rate limiter for authentication routes to prevent brute-force attacks

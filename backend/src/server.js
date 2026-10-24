@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
     res.json({
-        name: "CampusKart API",
+        name: "MujShoppers API",
         status: "running",
         version: "1.0.0"
     });
@@ -16,5 +16,5 @@ app.get("/", (req, res) => {
 connectDB();
 
 app.listen(PORT, () => {
-    console.log(`CampusKart server running on port ${PORT}`);
+    console.log(`MujShoppers server running on port ${PORT}`);
 });
