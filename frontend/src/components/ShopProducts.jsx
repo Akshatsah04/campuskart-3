@@ -212,11 +212,9 @@ export default function ShopProducts({ products }) {
                   {/* Seller / College */}
                   <div className="mt-3 border-t border-slate-100 pt-3">
                     <p className="truncate text-xs font-semibold text-slate-600">
-                      {product.seller?.name
-                        ? `Sold by ${product.seller.name}`
-                        : product.seller
-                          ? `Sold by ${product.seller}`
-                          : "Campus Seller"}
+                      {product.seller?.firstName
+                        ? `Sold by ${product.seller.firstName} ${product.seller.lastName || ""}`.trim()
+                        : "Campus Seller"}
                     </p>
 
                     {(product.college || product.seller?.college || product.location) && (

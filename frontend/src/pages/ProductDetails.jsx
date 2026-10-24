@@ -100,7 +100,7 @@ export default function ProductDetails() {
     const inCart = isInCart(product._id);
 
     const whatsappUrl = createWhatsAppLink(
-        product.seller?.phone,
+        product.seller?.whatsappNumber,
         getProductInquiryMessage(product)
     );
 
@@ -371,13 +371,15 @@ export default function ProductDetails() {
 
                                 <div className="mt-3 flex items-center gap-4">
                                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-900 text-lg font-black text-white">
-                                        {product.seller?.name?.charAt(0)?.toUpperCase() || "S"}
+                                        {product.seller?.firstName?.charAt(0)?.toUpperCase() || "S"}
                                     </div>
 
                                     <div className="min-w-0 flex-1">
                                         <div className="flex items-center gap-1.5">
                                             <h4 className="truncate text-base font-bold text-slate-900">
-                                                {product.seller?.name || "Campus Student"}
+                                                {product.seller?.firstName
+                                                    ? `${product.seller.firstName} ${product.seller.lastName || ""}`.trim()
+                                                    : "Campus Student"}
                                             </h4>
                                             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] text-white">
                                                 <Check size={10} strokeWidth={3} />

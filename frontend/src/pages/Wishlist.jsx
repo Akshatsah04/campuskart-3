@@ -140,7 +140,7 @@ export default function Wishlist() {
                   <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
 
                     <img
-                      src={item.image}
+                      src={item.images?.[0]?.url}
                       alt={item.title}
                       className="h-full w-full object-contain p-8 transition duration-500 group-hover:scale-105"
                     />
@@ -207,14 +207,14 @@ export default function Wishlist() {
                           </p>
 
                           <p className="truncate text-sm font-bold text-slate-800">
-                            {item.seller?.name ||
+                            {item.seller?.firstName ||
                               "Campus Seller"}
                           </p>
 
                         </div>
 
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-black text-white">
-                          {item.seller?.name
+                          {item.seller?.firstName
                             ?.charAt(0)
                             ?.toUpperCase() || "S"}
                         </div>

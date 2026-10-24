@@ -3,8 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
-  Minus,
-  Plus,
   Trash2,
   ShoppingBag,
   ShieldCheck,
@@ -20,14 +18,20 @@ export default function Cart() {
   const {
     cartItems,
     removeFromCart,
-    updateQuantity,
     clearCart,
     cartCount,
     cartSubtotal,
+    loading,
   } = useCart();
 
   const formatPrice = (price) => {
-    return `₹${price.toLocaleString("en-IN")}`;
+    const numericPrice = Number(price);
+
+    if (Number.isNaN(numericPrice)) {
+      return "₹0";
+    }
+
+    return `₹${numericPrice.toLocaleString("en-IN")}`;
   };
 
   return (
@@ -118,7 +122,7 @@ export default function Cart() {
               {cartItems.map((item) => (
 
                 <article
-                  key={item.id || item._id}
+                  key={item.product._id}
                   className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
                 >
 
@@ -127,12 +131,12 @@ export default function Cart() {
                     {/* Product Image */}
 
                     <Link
-                      to={`/product/${item.id || item._id}`}
+                      to={`/product/${item.product._id}`}
                       className="h-28 w-28 shrink-0 overflow-hidden rounded-2xl bg-slate-100 sm:h-36 sm:w-36"
                     >
                       <img
-                        src={item.image}
-                        alt={item.title}
+                        src={item.product.images?.[0]?.url}
+                        alt={item.product.title}
                         className="h-full w-full object-contain p-4 transition duration-300 hover:scale-105"
                       />
                     </Link>
@@ -146,11 +150,11 @@ export default function Cart() {
                         <div className="min-w-0">
 
                           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
-                            {item.category}
+                            {item.product.category}
                           </p>
 
                           <h2 className="mt-1 line-clamp-2 text-base font-black leading-6 text-slate-950 sm:text-lg">
-                            {item.title}
+                            {item.product.title}
                           </h2>
 
                         </div>
@@ -158,7 +162,7 @@ export default function Cart() {
                         {/* Remove */}
 
                         <button
-                          onClick={() => removeFromCart(item.id || item._id)}
+                          onClick={() => removeFromCart(item.product._id)}
                           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 transition hover:bg-red-50 hover:text-red-500"
                           aria-label="Remove item"
                         >
@@ -171,7 +175,7 @@ export default function Cart() {
 
                       <div className="mt-2">
                         <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
-                          {item.condition}
+                          {item.product.condition}
                         </span>
                       </div>
 
@@ -182,82 +186,52 @@ export default function Cart() {
                         <span>
                           Seller:{" "}
                           <span className="font-semibold text-slate-600">
-                            {item.seller?.name || "Campus Seller"}
+                            {item.product.seller?.firstName
+                              ? `${item.product.seller.firstName} ${item.product.seller.lastName || ""}`.trim()
+                              : "Campus Seller"}
                           </span>
                         </span>
 
                         <span className="flex items-center gap-1">
                           <MapPin size={12} />
-                          {item.seller?.college || "Manipal University Jaipur"}
+                          {item.product.seller?.college || "Manipal University Jaipur"}
                         </span>
 
                       </div>
 
                       {/* Bottom Row */}
-                        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-
-                        {/* Quantity */}
-                        <div className="flex items-center rounded-xl border border-slate-200">
-
-                            <button
-                            onClick={() =>
-                                updateQuantity(item.id || item._id, -1)
-                            }
-                            className="flex h-9 w-9 items-center justify-center text-slate-500 transition hover:bg-slate-50 hover:text-slate-900"
-                            >
-                            <Minus size={15} />
-                            </button>
-
-                            <span className="w-8 text-center text-sm font-bold text-slate-900">
-                            {item.quantity}
-                            </span>
-
-                            <button
-                            onClick={() =>
-                                updateQuantity(item.id || item._id, 1)
-                            }
-                            className="flex h-9 w-9 items-center justify-center text-slate-500 transition hover:bg-slate-50 hover:text-slate-900"
-                            >
-                            <Plus size={15} />
-                            </button>
-
-                        </div>
+                      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
 
                         {/* Price */}
                         <div className="text-right">
 
-                            <p className="text-lg font-black text-slate-950">
-                            {formatPrice(item.price * item.quantity)}
-                            </p>
+                          <p className="text-lg font-black text-slate-950">
+                            {formatPrice(item.product?.price)}
+                          </p>
 
-                            {item.quantity > 1 && (
-                            <p className="text-[11px] text-slate-400">
-                                {formatPrice(item.price)} each
-                            </p>
-                            )}
 
                         </div>
-
-                        </div>
-
-                        {/* Contact Seller */}
-                        <button
-                        onClick={() => {
-                            console.log("Contact seller:", item.seller);
-                        }}
-                        className="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-slate-950 text-sm font-bold text-white transition hover:bg-emerald-600"
-                        >
-                        <MessageCircle size={17} />
-
-                        Contact{" "}
-                        {item.seller?.name
-                            ? item.seller.name.split(" ")[0]
-                            : "Seller"}
-                        </button>
 
                       </div>
 
+                      {/* Contact Seller */}
+                      <button
+                        onClick={() => {
+                          console.log("Contact seller:", item.product.seller);
+                        }}
+                        className="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-slate-950 text-sm font-bold text-white transition hover:bg-emerald-600"
+                      >
+                        <MessageCircle size={17} />
+
+                        Contact{" "}
+                        {item.product.seller
+                        ? `${item.product.seller.firstName} ${item.product.seller.lastName || ""}`.trim()
+                        : "Seller"}
+                      </button>
+
                     </div>
+
+                  </div>
 
                 </article>
 

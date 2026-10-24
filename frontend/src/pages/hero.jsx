@@ -229,10 +229,10 @@ export default function Hero() {
               {/* Header Group B: Catalog Title (Fades in on scroll) */}
               <div className="catalog-header w-full absolute top-10 flex flex-col items-center pointer-events-none">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#111111] tracking-tight leading-tight">
-                  Best Selling Products
+                  Browse By Categories
                 </h2>
                 <p className="text-slate-400 text-xs sm:text-sm font-semibold mt-1.5 uppercase tracking-widest">
-                  verified student listings
+                  Verified student listings
                 </p>
               </div>
 

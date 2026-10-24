@@ -134,14 +134,16 @@ export default function Navbar() {
                   className="flex items-center gap-2 rounded-xl px-2.5 py-2 transition hover:bg-slate-50"
                 >
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white">
-                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
-                  </div>
+                  {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
+                </div>
 
-                  <div className="max-w-[120px] text-left">
-                    <p className="truncate text-sm font-bold text-slate-900">
-                      {user?.name || "Profile"}
-                    </p>
-                  </div>
+                <div className="max-w-[120px] text-left">
+                  <p className="truncate text-sm font-bold text-slate-900">
+                    {user
+                      ? `${user.firstName}`
+                      : "Profile"}
+                  </p>
+                </div>
                 </button>
 
                 {/* Logout */}
@@ -306,12 +308,16 @@ export default function Navbar() {
                 className="flex items-center gap-2 rounded-xl px-2.5 py-2 transition hover:bg-slate-50"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white">
-                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                  {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
                 </div>
 
-                <span className="max-w-[120px] truncate text-sm font-semibold text-slate-800">
-                  {user?.name || "Profile"}
-                </span>
+                <div className="max-w-[120px] text-left">
+                  <p className="truncate text-sm font-bold text-slate-900">
+                    {user
+                      ? `${user.firstName} ${user.lastName}`
+                      : "Profile"}
+                  </p>
+                </div>
               </button>
 
               {/* Logout */}

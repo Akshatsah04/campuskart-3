@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect,useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -6,78 +6,8 @@ import BestSellerCard from "./BestSellerCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const featuredProducts = [
-  {
-    id: 1,
-    name: "Smart Watch",
-    tag: "NEW",
-    price: "$89.99",
-    rating: 4.6,
-    reviewsCount: 89,
-    description: "Track your fitness and stay connected.",
-    image: "/categories/electronics.PNG",
-  },
-  {
-    id: 2,
-    name: "Running Shoes",
-    tag: "TRENDING",
-    price: "$99.99",
-    rating: 4.7,
-    reviewsCount: 98,
-    description: "Lightweight and comfortable for everyday run.",
-    image: "/categories/clothing.PNG",
-  },
-  {
-    id: 3,
-    name: "Wireless Headphones",
-    tag: "BEST SELLER",
-    price: "$129.99",
-    rating: 4.8,
-    reviewsCount: 120,
-    description: "High quality sound with premium comfort.",
-    image: "/categories/electronics.PNG",
-  },
-  {
-    id: 4,
-    name: "DSLR Camera",
-    tag: "POPULAR",
-    price: "$699.99",
-    rating: 4.9,
-    reviewsCount: 60,
-    description: "Capture moments with perfect clarity.",
-    image: "/categories/electronics.PNG",
-  },
-  {
-    id: 5,
-    name: "Travel Backpack",
-    tag: "NEW",
-    price: "$59.99",
-    rating: 4.5,
-    reviewsCount: 75,
-    description: "Spacious, durable and water resistant.",
-    image: "/categories/others.PNG",
-  },
-  {
-    id: 6,
-    name: "Ergonomic Study Chair",
-    tag: "BEST SELLER",
-    price: "$149.99",
-    rating: 4.8,
-    reviewsCount: 112,
-    description: "Ergonomic mesh support for long study hours.",
-    image: "/categories/furniture.PNG",
-  },
-  {
-    id: 7,
-    name: "Engineering Textbook Set",
-    tag: "POPULAR",
-    price: "$45.00",
-    rating: 4.9,
-    reviewsCount: 154,
-    description: "Complete course book bundle in great condition.",
-    image: "/categories/textbooks.PNG",
-  },
-];
+const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 const getSpacing = () => {
   const w = typeof window !== "undefined" ? window.innerWidth : 1200;
@@ -106,6 +36,11 @@ const SIDE_2_OPACITY = 0.45;
 const MIN_OPACITY = 0.15;
 
 export default function BestSellers() {
+
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const viewportRef = useRef(null);
@@ -116,7 +51,7 @@ export default function BestSellers() {
   const startTrackXRef = useRef(0);
   const isDraggingRef = useRef(false);
   const spacingRef = useRef(getSpacing());
-  const activeIndexRef = useRef(2); // Start on item 2 (Wireless Headphones)
+  const activeIndexRef = useRef(2); 
 
   const [activeIndex, setActiveIndex] = useState(2);
   const [displaySpacing, setDisplaySpacing] = useState(getSpacing());
@@ -211,6 +146,36 @@ export default function BestSellers() {
   const handleNext = () => {
     snapToCard(activeIndexRef.current + 1, spacingRef.current);
   };
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+        try {
+            setLoading(true);
+            setError("");
+
+            const response = await fetch(
+                `${API_URL}/products/featured`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || "Failed to fetch products"
+                );
+            }
+
+            setFeaturedProducts(data.products || []);
+        } catch (err) {
+            console.error("Error fetching featured products:", err);
+            setError(err.message || "Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchFeaturedProducts();
+}, []);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -315,20 +280,20 @@ export default function BestSellers() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#FAF6EE] py-20 px-4 sm:px-6 lg:px-8 border-t border-[#E8DFD0]/60"
+      className="relative overflow-hidden bg-[#FFFDF2] py-20 px-4 sm:px-6 lg:px-8 border-t border-[#EBE6CE]/60"
     >
       <div className="relative z-10 mx-auto w-full max-w-[1600px]">
         {/* Header Section */}
         <div ref={headingRef} className="relative z-20 mx-auto max-w-2xl text-center mb-12">
-          <p className="text-xs sm:text-sm font-extrabold uppercase tracking-[0.25em] text-[#8C7A63]">
+          <p className="text-xs sm:text-sm font-extrabold uppercase tracking-[0.25em] text-emerald-600">
             OUR COLLECTION
           </p>
 
-          <h2 className="mt-2 font-serif text-4xl sm:text-5xl md:text-6xl font-black text-[#322517] tracking-tight leading-tight">
+          <h2 className="mt-2 text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
             Featured Products
           </h2>
 
-          <p className="mt-3 text-sm sm:text-base font-medium text-[#7A6B56]">
+          <p className="mt-3 text-sm sm:text-base font-medium text-slate-500">
             Explore our most popular items loved by customers
           </p>
         </div>
@@ -341,7 +306,7 @@ export default function BestSellers() {
             onClick={handlePrev}
             disabled={activeIndex === 0}
             aria-label="Previous Slide"
-            className="absolute left-2 sm:left-6 lg:left-12 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-[#E7DFD0] bg-white/95 text-[#5C4C36] shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white hover:text-slate-900 disabled:opacity-30 disabled:hover:scale-100 cursor-pointer"
+            className="absolute left-2 sm:left-6 lg:left-12 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-[#EBE6CE] bg-white/95 text-slate-600 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white hover:text-slate-900 disabled:opacity-30 disabled:hover:scale-100 cursor-pointer"
           >
             <ChevronLeft size={22} />
           </button>
@@ -352,7 +317,7 @@ export default function BestSellers() {
             onClick={handleNext}
             disabled={activeIndex === featuredProducts.length - 1}
             aria-label="Next Slide"
-            className="absolute right-2 sm:right-6 lg:right-12 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-[#E7DFD0] bg-white/95 text-[#5C4C36] shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white hover:text-slate-900 disabled:opacity-30 disabled:hover:scale-100 cursor-pointer"
+            className="absolute right-2 sm:right-6 lg:right-12 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-[#EBE6CE] bg-white/95 text-slate-600 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white hover:text-slate-900 disabled:opacity-30 disabled:hover:scale-100 cursor-pointer"
           >
             <ChevronRight size={22} />
           </button>
@@ -363,8 +328,8 @@ export default function BestSellers() {
             className="relative mx-auto h-[530px] sm:h-[570px] w-full touch-none select-none overflow-hidden"
           >
             {/* Soft Side Vignette Fades */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-[12%] bg-gradient-to-r from-[#FAF6EE] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-[12%] bg-gradient-to-l from-[#FAF6EE] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-[12%] bg-gradient-to-r from-[#FFFDF2] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-[12%] bg-gradient-to-l from-[#FFFDF2] to-transparent" />
 
             {/* Track */}
             <div
@@ -402,8 +367,8 @@ export default function BestSellers() {
               aria-label={`Go to slide ${i + 1}`}
               className={`h-3 rounded-full transition-all duration-300 cursor-pointer ${
                 i === activeIndex
-                  ? "w-8 bg-[#A68F6C]"
-                  : "w-3 bg-[#E5DFD0] hover:bg-[#B09874]"
+                  ? "w-8 bg-emerald-600"
+                  : "w-3 bg-[#DCD6B8] hover:bg-emerald-400"
               }`}
             />
           ))}

@@ -60,7 +60,9 @@ export default function Shop() {
           product.title?.toLowerCase().includes(query) ||
           product.description?.toLowerCase().includes(query) ||
           product.category?.toLowerCase().includes(query) ||
-          product.seller?.name?.toLowerCase().includes(query) ||
+          `${product.seller?.firstName || ""} ${product.seller?.lastName || ""}`
+            .toLowerCase()
+            .includes(query) ||
           product.college?.toLowerCase().includes(query)
         );
       });

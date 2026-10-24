@@ -5,150 +5,218 @@ import React, {
   useState,
 } from "react";
 
+import { useAuth } from "./AuthContext";
+
 const WishlistContext = createContext(null);
 
-const INITIAL_DEMO_WISHLIST = [
-  {
-    id: 101,
-    title: "iPhone 13 (128GB)",
-    price: 32000,
-    condition: "Like New",
-    category: "Electronics",
-    image: "/categories/electronics.PNG",
-    seller: {
-      name: "Rahul Sharma",
-      college: "Manipal University Jaipur",
-      phone: "+91 98765 43210",
-    },
-  },
-  {
-    id: 102,
-    title: "Engineering Mathematics Books",
-    price: 700,
-    condition: "Good",
-    category: "Books",
-    image: "/categories/textbooks.PNG",
-    seller: {
-      name: "Aditya Kumar",
-      college: "Manipal University Jaipur",
-      phone: "+91 98765 12345",
-    },
-  },
-  {
-    id: 103,
-    title: "Ergonomic Study Chair",
-    price: 2500,
-    condition: "Good",
-    category: "Furniture",
-    image: "/categories/furniture.PNG",
-    seller: {
-      name: "Ananya Gupta",
-      college: "Manipal University Jaipur",
-      phone: "+91 98765 45678",
-    },
-  },
-];
+const API_URL = `${import.meta.env.VITE_API_URL}/wishlist`;
 
 export function WishlistProvider({ children }) {
-  const [wishlistItems, setWishlistItems] = useState(() => {
-    const saved = localStorage.getItem("campuskart_wishlist");
+  const { isLoggedIn } = useAuth();
 
-    return saved
-      ? JSON.parse(saved)
-      : INITIAL_DEMO_WISHLIST;
-  });
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem(
-      "campuskart_wishlist",
-      JSON.stringify(wishlistItems)
-    );
-  }, [wishlistItems]);
+  // =========================================
+  // GET WISHLIST FROM BACKEND
+  // =========================================
 
-  const addToWishlist = (product) => {
-    setWishlistItems((prev) => {
-      const productId = product.id || product._id;
+  const fetchWishlist = async () => {
+    const token = localStorage.getItem("token");
 
-      const alreadyExists = prev.some(
-        (item) =>
-          item.id === productId ||
-          item._id === productId
-      );
+    if (!token) {
+      setWishlistItems([]);
+      return;
+    }
 
-      if (alreadyExists) {
-        return prev;
+    try {
+      setLoading(true);
+
+      const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch wishlist");
       }
 
-      return [
-        ...prev,
-        {
-          id: productId || Date.now(),
-          title: product.title || product.name,
-          price:
-            typeof product.price === "number"
-              ? product.price
-              : parseFloat(
-                  String(product.price).replace(
-                    /[^0-9.]/g,
-                    ""
-                  )
-                ),
-          condition: product.condition || "Like New",
-          category: product.category || "General",
-          image:
-            product.image ||
-            product.images?.[0] ||
-            "/categories/electronics.PNG",
-          seller:
-            product.seller || {
-              name: "Campus Seller",
-              college: "Manipal University Jaipur",
-              phone: "",
-            },
+      setWishlistItems(data.wishlist || []);
+
+    } catch (error) {
+      console.error("Failed to fetch wishlist:", error);
+      setWishlistItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  // =========================================
+  // FETCH WHEN USER LOGS IN
+  // =========================================
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchWishlist();
+    } else {
+      setWishlistItems([]);
+    }
+  }, [isLoggedIn]);
+
+
+  // =========================================
+  // ADD TO WISHLIST
+  // =========================================
+
+  const addToWishlist = async (product) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("User must be logged in");
+      return;
+    }
+
+    try {
+      const productId = product._id || product.id;
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      ];
+        body: JSON.stringify({
+          productId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to add to wishlist");
+      }
+
+      if (data.wishlist) {
+        // POST currently returns IDs.
+        // Fetch again so frontend gets complete products.
+        await fetchWishlist();
+      } else {
+        await fetchWishlist();
+      }
+
+    } catch (error) {
+      console.error("Failed to add to wishlist:", error);
+    }
+  };
+
+
+  // =========================================
+  // REMOVE FROM WISHLIST
+  // =========================================
+
+  const removeFromWishlist = async (productId) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_URL}/${productId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to remove from wishlist");
+      }
+
+      await fetchWishlist();
+
+    } catch (error) {
+      console.error("Failed to remove from wishlist:", error);
+    }
+  };
+
+
+  // =========================================
+  // CLEAR WISHLIST
+  // =========================================
+
+  const clearWishlist = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to clear wishlist");
+      }
+
+      setWishlistItems([]);
+
+    } catch (error) {
+      console.error("Failed to clear wishlist:", error);
+    }
+  };
+
+
+  // =========================================
+  // CHECK IF PRODUCT IS IN WISHLIST
+  // =========================================
+
+  const isInWishlist = (productId) => {
+    return wishlistItems.some((product) => {
+      const id = product?._id || product?.id || product;
+
+      return id === productId;
     });
   };
 
-  const removeFromWishlist = (id) => {
-    setWishlistItems((prev) =>
-      prev.filter(
-        (item) =>
-          item.id !== id &&
-          item._id !== id
-      )
-    );
-  };
 
-  const isInWishlist = (id) => {
-    return wishlistItems.some(
-      (item) =>
-        item.id === id ||
-        item._id === id
-    );
-  };
-
-  const clearWishlist = () => {
-    setWishlistItems([]);
-  };
+  // =========================================
+  // WISHLIST COUNT
+  // =========================================
 
   const wishlistCount = wishlistItems.length;
+
 
   return (
     <WishlistContext.Provider
       value={{
         wishlistItems,
+        loading,
+
         addToWishlist,
         removeFromWishlist,
-        isInWishlist,
         clearWishlist,
+        isInWishlist,
+
         wishlistCount,
+        fetchWishlist,
       }}
     >
       {children}
     </WishlistContext.Provider>
   );
 }
+
 
 export function useWishlist() {
   const context = useContext(WishlistContext);

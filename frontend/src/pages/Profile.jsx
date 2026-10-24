@@ -184,14 +184,13 @@ export default function Profile() {
     );
   }
 
-  const initials = user.name
-    ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2)
-    : "?";
+  const initials = `${user.firstName || ""} ${user.lastName || ""}`
+    .trim()
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2) || "?";
 
   return (
     <main className="min-h-screen bg-[#FDFBF0] px-3 py-5 sm:px-5 lg:px-8 lg:py-8">
@@ -214,7 +213,7 @@ export default function Profile() {
                     {user.avatar ? (
                       <img
                         src={user.avatar}
-                        alt={user.name}
+                        alt={`${user.firstName || ""} ${user.lastName || ""}`.trim()}
                         className="h-32 w-32 rounded-full object-cover shadow-lg sm:h-36 sm:w-36"
                       />
                     ) : (
@@ -235,7 +234,7 @@ export default function Profile() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h1 className="font-archivo text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-                        {user.name}
+                        {`${user.firstName || ""} ${user.lastName || ""}`.trim()}
                       </h1>
                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white">
                         <Check size={15} strokeWidth={3} />

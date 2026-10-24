@@ -104,12 +104,14 @@ export const loginUser = async (req, res, next) => {
             token,
             user: {
                 id: user._id,
-                name: user.name,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                registrationNumber: user.registrationNumber,
                 email: user.email,
                 college: user.college,
                 branch: user.branch,
                 year: user.year,
-                phone: user.phone,
+                whatsappNumber: user.whatsappNumber,
                 profilePic: user.profilePic
             }
         });
@@ -151,12 +153,20 @@ export const updateUserProfile = async (req, res, next) => {
             });
         }
 
-        const { name, branch, year, phone, profilePic } = req.body;
+        const {
+            firstName,
+            lastName,
+            branch,
+            year,
+            whatsappNumber,
+            profilePic
+        } = req.body;
 
-        if (name !== undefined) user.name = name.trim();
+        if (firstName !== undefined) user.firstName = firstName.trim();
+        if (lastName !== undefined) user.lastName = lastName.trim();
         if (branch !== undefined) user.branch = branch.trim();
         if (year !== undefined) user.year = Number(year);
-        if (phone !== undefined) user.phone = phone.trim();
+        if (whatsappNumber !== undefined) user.whatsappNumber = whatsappNumber.trim();
         if (profilePic !== undefined) user.profilePic = profilePic;
 
         const updatedUser = await user.save();
@@ -183,7 +193,9 @@ export const updateUserProfile = async (req, res, next) => {
 export const getUserPublicProfile = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id)
-            .select("name college branch year profilePic createdAt");
+            .select(
+                "firstName lastName college branch year profilePic createdAt"
+            );
 
         if (!user) {
             return res.status(404).json({

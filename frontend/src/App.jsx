@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./App.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -18,6 +18,7 @@ import Wishlist from "./pages/Wishlist";
 import ProductDetails from "./pages/ProductDetails";
 import EditProduct from "./pages/EditProduct";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 import Lenis from "lenis";
 import gsap from "gsap";
@@ -37,6 +38,7 @@ function Home() {
 }
 
 function App() {
+  const lenisRef = useRef(null);
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -47,6 +49,8 @@ function App() {
       wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
     });
+    
+    lenisRef.current = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -60,13 +64,14 @@ function App() {
     return () => {
       gsap.ticker.remove(updateLenis);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-[#FDFBF0] flex flex-col font-sans text-slate-800 antialiased">
-
+        <ScrollToTop lenisRef={lenisRef} />
         <Navbar />
 
         <main className="flex-grow">

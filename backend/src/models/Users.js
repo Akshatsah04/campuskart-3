@@ -1,10 +1,39 @@
 import mongoose from "mongoose";
 
+const cartItemSchema = new mongoose.Schema(
+    {
+        product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+            required: true
+        },
+        quantity: {
+            type: Number,
+            default: 1,
+            min: 1
+        }
+    },
+    { _id: false }
+);
+
 const userSchema = new mongoose.Schema(
     {
-        name: {
+        firstName: {
             type: String,
             required: true,
+            trim: true
+        },
+
+        lastName: {
+            type: String,
+            required: true,
+            trim: true
+        },
+
+        registrationNumber: {
+            type: String,
+            required: true,
+            unique: true,
             trim: true
         },
 
@@ -14,6 +43,11 @@ const userSchema = new mongoose.Schema(
             unique: true,
             lowercase: true,
             trim: true
+        },
+
+        isEmailVerified: {
+            type: Boolean,
+            default: false
         },
 
         password: {
@@ -38,19 +72,32 @@ const userSchema = new mongoose.Schema(
             required: true
         },
 
-        phone: {
+        whatsappNumber: {
             type: String,
-            required: true
+            required: true,
+            trim: true
         },
 
         profilePic: {
             type: String,
             default: ""
-        }
+        },
+
+        // 🛒 User's cart
+        cart: {
+            type: [cartItemSchema],
+            default: []
+        },
+
+        // ❤️ User's wishlist
+        wishlist: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product"
+            }
+        ]
     },
-    {
-        timestamps: true
-    }
+    { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);

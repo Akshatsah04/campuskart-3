@@ -1,107 +1,228 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext(null);
 
-const INITIAL_DEMO_CART = [
-  {
-    id: 1,
-    title: "MacBook Pro M1 (16GB/512GB SSD)",
-    price: 54999,
-    condition: "Like New",
-    category: "Electronics",
-    image: "/categories/electronics.PNG",
-    seller: { name: "Rahul Sharma", college: "Manipal University Jaipur", phone: "+91 98765 43210" },
-    quantity: 1,
-  },
-  {
-    id: 2,
-    title: "Ergonomic Mesh Study Chair",
-    price: 3499,
-    condition: "Good",
-    category: "Furniture",
-    image: "/categories/furniture.PNG",
-    seller: { name: "Ananya Gupta", college: "Manipal University Jaipur", phone: "+91 98765 12345" },
-    quantity: 1,
-  },
-];
+const API_URL = `${import.meta.env.VITE_API_URL}/cart`;
 
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState(() => {
-    const saved = localStorage.getItem("campuskart_cart");
-    return saved ? JSON.parse(saved) : INITIAL_DEMO_CART;
-  });
+  const { isLoggedIn } = useAuth();
 
-  useEffect(() => {
-    localStorage.setItem("campuskart_cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const addToCart = (product) => {
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id || item._id === product._id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id || item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [
-        ...prev,
-        {
-          id: product.id || product._id || Date.now(),
-          title: product.title || product.name,
-          price: typeof product.price === "number" ? product.price : parseFloat(String(product.price).replace(/[^0-9.]/g, "")),
-          condition: product.condition || "Like New",
-          category: product.category || "General",
-          image: product.image || "/categories/electronics.PNG",
-          seller: product.seller || { name: "Campus Seller", college: "MUJ", phone: "+91 98765 43210" },
-          quantity: 1,
+  // =========================================
+  // GET CART FROM BACKEND
+  // =========================================
+
+  const fetchCart = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setCartItems([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      ];
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch cart");
+      }
+
+      setCartItems(data.cart || []);
+    } catch (error) {
+      console.error("Failed to fetch cart:", error);
+      setCartItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch cart whenever user logs in
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchCart();
+    } else {
+      setCartItems([]);
+    }
+  }, [isLoggedIn]);
+
+
+  // =========================================
+  // ADD TO CART
+  // =========================================
+
+  const addToCart = async (product) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("User must be logged in");
+      return;
+    }
+
+    try {
+      const productId = product._id || product.id;
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to add product");
+      }
+
+      // Backend already returns the updated cart
+      if (data.cart) {
+        setCartItems(data.cart);
+      } else {
+        // In case product was already there,
+        // refresh to make sure frontend is synchronized.
+        await fetchCart();
+      }
+
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+    }
+  };
+
+
+  // =========================================
+  // REMOVE FROM CART
+  // =========================================
+
+  const removeFromCart = async (productId) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_URL}/${productId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to remove product");
+      }
+
+      setCartItems(data.cart || []);
+
+    } catch (error) {
+      console.error("Failed to remove from cart:", error);
+    }
+  };
+
+
+  // =========================================
+  // CLEAR CART
+  // =========================================
+
+  const clearCart = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to clear cart");
+      }
+
+      setCartItems([]);
+
+    } catch (error) {
+      console.error("Failed to clear cart:", error);
+    }
+  };
+
+
+  // =========================================
+  // CHECK IF PRODUCT IS IN CART
+  // =========================================
+
+  const isInCart = (productId) => {
+    return cartItems.some((item) => {
+      const id =
+        item.product?._id ||
+        item.product?.id ||
+        item.product;
+
+      return id === productId;
     });
   };
 
-  const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id && item._id !== id));
-  };
 
-  const updateQuantity = (id, delta) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) => {
-          if (item.id === id || item._id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean)
-    );
-  };
+  // =========================================
+  // CART COUNT
+  // =========================================
 
-  const clearCart = () => {
-    setCartItems([]);
-  };
+  const cartCount = cartItems.length;
 
-  const isInCart = (id) => {
-    return cartItems.some((item) => item.id === id || item._id === id);
-  };
 
-  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  // =========================================
+  // CART SUBTOTAL
+  // =========================================
 
-  const cartSubtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const cartSubtotal = cartItems.reduce((total, item) => {
+    const price = Number(item.product?.price || 0);
+    const quantity = item.quantity || 1;
+
+    return total + price * quantity;
+  }, 0);
+
 
   return (
     <CartContext.Provider
       value={{
         cartItems,
+        loading,
+
         addToCart,
         removeFromCart,
-        updateQuantity,
         clearCart,
         isInCart,
+
         cartCount,
         cartSubtotal,
+
+        fetchCart,
       }}
     >
       {children}
@@ -109,10 +230,13 @@ export function CartProvider({ children }) {
   );
 }
 
+
 export function useCart() {
   const context = useContext(CartContext);
+
   if (!context) {
     throw new Error("useCart must be used within a CartProvider");
   }
+
   return context;
 }

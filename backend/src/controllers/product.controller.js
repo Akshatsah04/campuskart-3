@@ -149,7 +149,10 @@ export const getProducts = async (req, res, next) => {
             .sort(sortOption)
             .skip(skip)
             .limit(limitNum)
-            .populate("seller", "name college branch year phone profilePic");
+            .populate(
+                "seller",
+                "firstName lastName college branch year whatsappNumber profilePic"
+            )
 
         res.status(200).json({
             success: true,
@@ -171,7 +174,10 @@ export const getProducts = async (req, res, next) => {
 export const getProductById = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id)
-            .populate("seller", "name college branch year phone profilePic createdAt");
+            .populate(
+                "seller",
+                "firstName lastName college branch year whatsappNumber profilePic"
+            )
 
         if (!product) {
             return res.status(404).json({
@@ -361,5 +367,36 @@ export const deleteProduct = async (req, res, next) => {
 
     } catch (error) {
         next(error);
+    }
+};
+
+
+
+// Get the newest available products for the homepage
+export const getFeaturedProducts = async (req, res) => {
+    try {
+        const products = await Product.find({
+            status: "available",
+        })
+            .sort({ createdAt: -1 })
+            .limit(7)
+            .populate(
+                "seller",
+                "firstName lastName college branch year whatsappNumber profilePic"
+            )
+            .lean();
+
+        return res.status(200).json({
+            success: true,
+            count: products.length,
+            products,
+        });
+    } catch (error) {
+        console.error("Error fetching featured products:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch featured products",
+        });
     }
 };

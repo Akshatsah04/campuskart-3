@@ -60,11 +60,17 @@ export const loginValidator = [
 ];
 
 export const updateProfileValidator = [
-    body("name")
+    body("firstName")
         .optional()
         .trim()
-        .isLength({ min: 2, max: 60 })
-        .withMessage("Name must be between 2 and 60 characters"),
+        .isLength({ min: 2, max: 30 })
+        .withMessage("First name must be between 2 and 30 characters"),
+
+    body("lastName")
+        .optional()
+        .trim()
+        .isLength({ min: 2, max: 30 })
+        .withMessage("Last name must be between 2 and 30 characters"),
 
     body("branch")
         .optional()
@@ -75,9 +81,9 @@ export const updateProfileValidator = [
         .isInt({ min: 1, max: 6 })
         .withMessage("Year must be between 1 and 6"),
 
-    body("phone")
+    body("whatsappNumber")
         .optional()
         .trim()
         .matches(/^[+]?[0-9\s-]{10,15}$/)
-        .withMessage("Please enter a valid phone number")
+        .withMessage("Please enter a valid WhatsApp number")
 ];
