@@ -15,7 +15,7 @@ export default function Hero() {
       id: 1,
       title: "Clothing",
       gradient: "from-[#8B5CF6] to-[#6366F1]", // Purple to Indigo
-      image: "/categories/clothing.PNG",
+      image: "https://res.cloudinary.com/rsnojnir/image/upload/v1793200495/clothing.png",
     },
     {
       id: 2,
@@ -27,19 +27,19 @@ export default function Hero() {
         arrowColor: "border-t-[#2563EB]",
         animation: "animate-float"
       },
-      image: "/categories/electronics.PNG",
+      image: "https://res.cloudinary.com/rsnojnir/image/upload/v1793200501/electronics.png",
     },
     {
       id: 3,
       title: "Furniture",
       gradient: "from-[#F59E0B] to-[#EF4444]", // Amber to Red
-      image: "/categories/furniture.PNG",
+      image: "https://res.cloudinary.com/rsnojnir/image/upload/v1793200515/furniture.png",
     },
     {
       id: 4,
       title: "Stationary",
       gradient: "from-[#EC4899] to-[#F43F5E]", // Pink to Rose
-      image: "/categories/stationary.PNG",
+      image: "https://res.cloudinary.com/rsnojnir/image/upload/v1793200537/stationary.png",
 
     },
     {
@@ -52,13 +52,13 @@ export default function Hero() {
         arrowColor: "border-t-[#556B2F]",
         animation: "animate-float-delayed"
       },
-      image: "/categories/textbooks.PNG",
+      image: "https://res.cloudinary.com/rsnojnir/image/upload/v1793200558/textbooks.png",
     },
     {
       id: 6,
       title: "Others",
       gradient: "from-[#556B2F] to-[#7B9A42]", // Dark Olive Green
-      image: "/categories/others.PNG",
+      image: "https://res.cloudinary.com/rsnojnir/image/upload/v1793200581/others.png",
     }
   ];
 
@@ -242,7 +242,7 @@ export default function Hero() {
 
             {/* Cards Row - remains pinned in center */}
             <div className="relative w-full max-w-5xl h-[34vh] min-h-[220px] max-h-[360px] flex items-center justify-center select-none">
-              <div className="flex -space-x-15 sm:-space-x-12 md:-space-x-16 items-center justify-center">
+  <div className="category-cards-track flex items-center justify-center -space-x-15 sm:-space-x-12 md:-space-x-16">
                 {cards.map((card) => (
                   <div
                     key={card.id}
@@ -485,6 +485,16 @@ export default function Hero() {
 
         </div>
       </section>
+
+
+      <style>{`
+  @media (max-width: 639px) {
+    .category-cards-track {
+      width: max-content;
+      min-width: max-content;
+    }
+  }
+`}</style>
     </>
   );
 }
