@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
+  const navigate = useNavigate();
   const containerRef = useRef(null);
   const pinnedSectionRef = useRef(null);
 
@@ -290,10 +292,10 @@ export default function Hero() {
                   Whether it is textbooks, electronics, furniture & more.
                 </p>
                 <div className="flex items-center gap-3">
-                  <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-6 py-3 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300">
+                  <button onClick={() => navigate("/shop")} className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-6 py-3 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300">
                     Start Exploring
                   </button>
-                  <button className="cursor-pointer rounded-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs sm:text-sm font-bold px-6 py-3 shadow-sm transition-all duration-300">
+                  <button onClick={() => navigate("/sell")} className="cursor-pointer rounded-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs sm:text-sm font-bold px-6 py-3 shadow-sm transition-all duration-300">
                     List an item
                   </button>
                 </div>
@@ -301,7 +303,7 @@ export default function Hero() {
 
               {/* Footer B: Catalog "Explore More" button (Fades in on scroll) */}
               <div className="catalog-footer w-full absolute bottom-10 flex flex-col items-center pointer-events-none">
-                <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
+                <button onClick={() => navigate("/shop")} className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
                   Explore More Products
                 </button>
               </div>

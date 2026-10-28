@@ -150,9 +150,7 @@ export default function ShopSearch({
               <button
                 type="button"
                 onClick={() => {
-                  setSortOption(option);
-                  setIsSortOpen(false);
-                  onSortChange?.(option);
+                  setIsSortOpen(!isSortOpen);
                 }}
                 className="flex min-h-[54px] w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-700 shadow-sm transition-all duration-300 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 md:min-w-[120px]"
               >
@@ -208,10 +206,11 @@ export default function ShopSearch({
                       onClick={() => {
                         setSortOption(option);
                         setIsSortOpen(false);
+                        onSortChange?.(option);
                       }}
                       className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-semibold transition-colors ${sortOption === option
-                          ? "bg-emerald-50 text-emerald-700"
-                          : "text-slate-600 hover:bg-slate-50"
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "text-slate-600 hover:bg-slate-50"
                         }`}
                     >
                       {option}

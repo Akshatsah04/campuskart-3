@@ -163,8 +163,7 @@ export default function Navbar() {
           <div className="flex md:hidden">
             <button
               onClick={() => {
-                setActiveMain(link);
-                setIsMobileMenuOpen(false);
+                setIsMobileMenuOpen(!isMobileMenuOpen);
 
                 if (link === "Home") {
                   navigate("/");
@@ -228,6 +227,13 @@ export default function Navbar() {
                   onClick={() => {
                     setActiveMain(link);
                     setIsMobileMenuOpen(false);
+                    if (link === "Home") {
+                      navigate("/");
+                    } else if (link === "Shop") {
+                      navigate("/shop");
+                    } else if (link === "Sell Item") {
+                      navigate("/sell");
+                    }
                   }}
                   className={`flex w-full items-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${isActive
                       ? 'bg-white text-emerald-600 shadow-sm border border-slate-100'
