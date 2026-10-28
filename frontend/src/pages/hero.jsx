@@ -242,7 +242,7 @@ export default function Hero() {
 
             {/* Cards Row - remains pinned in center */}
             <div className="relative w-full max-w-5xl h-[34vh] min-h-[220px] max-h-[360px] flex items-center justify-center select-none">
-  <div className="category-cards-track flex items-center justify-center -space-x-15 sm:-space-x-12 md:-space-x-16">
+              <div className="category-cards-track flex items-center justify-center -space-x-15 sm:-space-x-12 md:-space-x-16">
                 {cards.map((card) => (
                   <div
                     key={card.id}
