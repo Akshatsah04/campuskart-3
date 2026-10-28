@@ -63,14 +63,14 @@ export default function ShopCategories() {
         </div>
 
         {/* Categories */}
-        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+        <div className="w-full min-w-0 max-w-full overflow-x-auto pb-4 scrollbar-hide">
+          <div className="flex w-max gap-4">
 
           {categories.map((category) => (
             <button
               key={category.name}
               type="button"
-              className="group relative min-w-[130px] flex-shrink-0 overflow-hidden rounded-2xl bg-white text-left shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-900/10"
-            >
+              className="group relative w-[130px] shrink-0 overflow-hidden rounded-2xl bg-white text-left shadow-sm ring-1 ring-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-900/10"            >
 
               {/* Image */}
               <div className="relative h-20 overflow-hidden bg-white">
@@ -97,6 +97,7 @@ export default function ShopCategories() {
             </button>
           ))}
 
+        </div>
         </div>
 
       </div>
