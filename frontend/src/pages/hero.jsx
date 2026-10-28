@@ -242,7 +242,7 @@ export default function Hero() {
 
             {/* Cards Row - remains pinned in center */}
             <div className="relative w-full max-w-5xl h-[34vh] min-h-[220px] max-h-[360px] flex items-center justify-center select-none">
-              <div className="flex -space-x-10 sm:-space-x-12 md:-space-x-16 items-center justify-center">
+              <div className="flex -space-x-15 sm:-space-x-12 md:-space-x-16 items-center justify-center">
                 {cards.map((card) => (
                   <div
                     key={card.id}
@@ -261,8 +261,7 @@ export default function Hero() {
 
                     {/* Inner Card - handles graphics and hovers */}
                     <div
-                      className={`w-[22vh] h-[30vh] min-w-[120px] min-h-[160px] max-w-[185px] max-h-[250px] rounded-[20px] sm:rounded-[26px] bg-gradient-to-br ${card.gradient} flex flex-col justify-between shadow-lg shadow-slate-900/8 transition-all duration-300 ease-out cursor-pointer hover:shadow-xl hover:shadow-slate-950/15 hover:scale-105 hover:-translate-y-3`}
-                    >
+                      className={`w-[13vh] h-[18vh] min-w-[70px] min-h-[100px] max-w-[185px] max-h-[250px] sm:w-[22vh] sm:h-[30vh] sm:min-w-[120px] sm:min-h-[160px] rounded-[12px] sm:rounded-[26px] bg-gradient-to-br ${card.gradient} flex flex-col justify-between shadow-lg shadow-slate-900/8 transition-all duration-300 ease-out cursor-pointer hover:shadow-xl hover:shadow-slate-950/15 hover:scale-105 hover:-translate-y-3`}>
                       <img
                         src={card.image}
                         alt={card.title}
@@ -380,10 +379,10 @@ export default function Hero() {
 
               {/* CTAs */}
               <div className="flex items-center gap-3 flex-wrap">
-                <button className="rounded-xl bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all duration-200">
+                <button onClick={() => navigate("/sell")}  className="rounded-xl bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all duration-200">
                   Start Selling
                 </button>
-                <button className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition-colors">
+                <button onClick={() => navigate("/shop")} className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition-colors">
                   Browse Products
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
