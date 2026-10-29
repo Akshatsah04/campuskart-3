@@ -440,17 +440,24 @@ export default function Hero() {
               <div className="bg-slate-50 rounded-2xl border border-slate-100 p-5 shadow-sm">
                 <div className="flex justify-around">
                   {[
-                    { label: 'Books', color: 'bg-blue-100 text-blue-600', icon: '📚' },
-                    { label: 'Electronics', color: 'bg-slate-100 text-slate-600', icon: '💻' },
-                    { label: 'Furniture', color: 'bg-amber-100 text-amber-600', icon: '🪑' },
-                    { label: 'Cycles', color: 'bg-emerald-100 text-emerald-600', icon: '🚲' },
-                    { label: 'Hostel Essentials', color: 'bg-pink-100 text-pink-600', icon: '🎒' },
+                    { label: "Books", icon: "/categories_icon/textbooks_icon.png" },
+                    { label: "Electronics", icon: "/categories_icon/electronics_icon.png" },
+                    { label: "Furniture", icon: "/categories_icon/furniture_icon.png" },
+                    { label: "Sports", icon: "/categories_icon/sports_icon.png" },
+                    { label: "Hostel Essentials", icon: "/categories_icon/others_icon.png" },
                   ].map((cat) => (
                     <div key={cat.label} className="flex flex-col items-center gap-1.5">
-                      <div className={`w-10 h-10 rounded-xl ${cat.color} flex items-center justify-center text-xl shadow-sm`}>
-                        {cat.icon}
+                      <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm p-1.5">
+                        <img
+                          src={cat.icon}
+                          alt={cat.label}
+                          className="w-full h-full object-contain"
+                        />
                       </div>
-                      <span className="text-[9px] font-semibold text-slate-500 text-center leading-tight max-w-[44px]">{cat.label}</span>
+
+                      <span className="text-[9px] font-semibold text-slate-500 text-center leading-tight max-w-[60px]">
+                        {cat.label}
+                      </span>
                     </div>
                   ))}
                 </div>
