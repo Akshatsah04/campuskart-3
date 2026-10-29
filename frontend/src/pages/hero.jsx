@@ -29,7 +29,7 @@ export default function Hero() {
       title: "Electronics",
       gradient: "from-[#06B6D4] to-[#3B82F6]", // Cyan to Blue
       tag: {
-        text: "@coplin",
+        text: "Earphones",
         color: "bg-[#2563EB]", // Blue tag
         arrowColor: "border-t-[#2563EB]",
         animation: "animate-float"
@@ -54,7 +54,7 @@ export default function Hero() {
       title: "Textbooks",
       gradient: "from-[#556B2F] to-[#7B9A42]", // Dark Olive Green
       tag: {
-        text: "@andrea",
+        text: "DSA Guides",
         color: "bg-[#556B2F]", // Olive tag
         arrowColor: "border-t-[#556B2F]",
         animation: "animate-float-delayed"
@@ -238,7 +238,11 @@ export default function Hero() {
               {/* Header Group B: Catalog Title (Fades in on scroll) */}
               <div className="catalog-header w-full absolute top-10 flex flex-col items-center pointer-events-none">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#111111] tracking-tight leading-tight">
+<<<<<<< HEAD
                   Browse By Categories
+=======
+                  Browse by Category
+>>>>>>> 87d3c31 (text changes)
                 </h2>
                 <p className="text-slate-400 text-xs sm:text-sm font-semibold mt-1.5 uppercase tracking-widest">
                   Verified student listings
@@ -304,8 +308,7 @@ export default function Hero() {
               {/* Footer A: Hero subtext and CTA buttons */}
               <div className="hero-header w-full absolute bottom-10 flex flex-col items-center gap-4">
                 <p className="max-w-xl text-xs sm:text-sm md:text-base text-slate-500 font-semibold leading-relaxed px-4">
-                  Buy, sell, and rent everything you need for your campus life.<br className="hidden sm:inline" />
-                  Whether it is textbooks, electronics, furniture & more.
+                  Buy, sell or rent anything you need for your campus life!<br className="hidden sm:inline" />                 
                 </p>
                 <div className="flex items-center gap-3">
                   <button onClick={() => navigate("/shop")} className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-6 py-3 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300">
@@ -319,8 +322,13 @@ export default function Hero() {
 
               {/* Footer B: Catalog "Explore More" button (Fades in on scroll) */}
               <div className="catalog-footer w-full absolute bottom-10 flex flex-col items-center pointer-events-none">
+<<<<<<< HEAD
                 <button onClick={() => navigate("/shop")} className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
                   Explore More Products
+=======
+                <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
+                  Explore All Products
+>>>>>>> 87d3c31 (text changes)
                 </button>
               </div>
 
