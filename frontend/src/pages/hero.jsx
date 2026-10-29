@@ -238,11 +238,7 @@ export default function Hero() {
               {/* Header Group B: Catalog Title (Fades in on scroll) */}
               <div className="catalog-header w-full absolute top-10 flex flex-col items-center pointer-events-none">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#111111] tracking-tight leading-tight">
-<<<<<<< HEAD
-                  Browse By Categories
-=======
                   Browse by Category
->>>>>>> 87d3c31 (text changes)
                 </h2>
                 <p className="text-slate-400 text-xs sm:text-sm font-semibold mt-1.5 uppercase tracking-widest">
                   Verified student listings
@@ -322,13 +318,8 @@ export default function Hero() {
 
               {/* Footer B: Catalog "Explore More" button (Fades in on scroll) */}
               <div className="catalog-footer w-full absolute bottom-10 flex flex-col items-center pointer-events-none">
-<<<<<<< HEAD
-                <button onClick={() => navigate("/shop")} className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
-                  Explore More Products
-=======
                 <button className="cursor-pointer rounded-full bg-[#111111] hover:bg-slate-800 text-white text-xs sm:text-sm font-bold px-8 py-3.5 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all duration-300 pointer-events-auto">
                   Explore All Products
->>>>>>> 87d3c31 (text changes)
                 </button>
               </div>
 
