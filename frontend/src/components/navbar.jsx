@@ -226,14 +226,14 @@ export default function Navbar() {
                   key={link}
                   onClick={() => {
                     setActiveMain(link);
-                    setIsMobileMenuOpen(false);
                     if (link === "Home") {
                       navigate("/");
-                    } else if (link === "Shop") {
+                    } else if (link === "Shop")  {
                       navigate("/shop");
                     } else if (link === "Sell Item") {
                       navigate("/sell");
                     }
+                    setIsMobileMenuOpen(false);
                   }}
                   className={`flex w-full items-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${isActive
                       ? 'bg-white text-emerald-600 shadow-sm border border-slate-100'
@@ -275,14 +275,14 @@ export default function Navbar() {
           {!isLoggedIn ? (
             <div className="flex items-center gap-3">
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => {navigate("/login"),setIsMobileMenuOpen(false)}}
                 className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
                 Log In
               </button>
 
               <button
-                onClick={() => navigate("/signup")}
+                onClick={() => {navigate("/signup"),setIsMobileMenuOpen(false)}}
                 className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-600"
               >
                 Sign Up

@@ -341,7 +341,7 @@ export default function Footer() {
 
           <div className="pointer-events-none relative mt-8 h-[105px] overflow-hidden sm:h-[145px] lg:mt-5 lg:h-[180px]">
 
-            <div className="absolute left-1/2 top-[25%] -translate-x-1/2 whitespace-nowrap text-[20vw] font-archivo font-bold leading-none tracking-[-0.08em] text-slate-950 sm:text-[20vw] lg:text-[9vw]">
+            <div className="absolute left-1/2 top-[30%] -translate-x-1/2 whitespace-nowrap text-[10vw] font-archivo font-bold leading-none tracking-[-0.08em] text-slate-950 sm:text-[15vw] lg:text-[9vw]">
               MUJSHOPPERS
             </div>
 

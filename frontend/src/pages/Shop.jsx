@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import ShopSearch from "../components/ShopSearch";
@@ -7,8 +7,12 @@ import ShopCategories from "../components/ShopCategories";
 import ShopProducts from "../components/ShopProducts";
 
 import { getProducts } from "../api/products";
+import { useSearchParams } from "react-router-dom";
 
 export default function Shop() {
+
+  const categoriesSectionRef = useRef(null);
+
   const [products, setProducts] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -17,7 +21,7 @@ export default function Shop() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState({
-    category: "All",
+    category: new URLSearchParams(window.location.search).get("category") || "All",
     condition: "All",
     location: "All",
     minPrice: "",
@@ -25,6 +29,32 @@ export default function Shop() {
   });
 
   const [sortOption, setSortOption] = useState("Relevance");
+
+  const [searchParams] = useSearchParams();
+
+  const selectedCategory = searchParams.get("category") || "";
+
+  useEffect(() => {
+  if (!selectedCategory) return;
+
+  const timeout = setTimeout(() => {
+    categoriesSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, 300);
+
+  return () => clearTimeout(timeout);
+}, [selectedCategory]);
+
+  useEffect(() => {
+  const categoryFromUrl = searchParams.get("category") || "All";
+
+  setFilters((prev) => ({
+    ...prev,
+    category: categoryFromUrl,
+  }));
+}, [searchParams]);
 
   // Fetch products from backend
   useEffect(() => {
@@ -71,7 +101,9 @@ export default function Shop() {
     // Category
     if (filters.category !== "All") {
       result = result.filter(
-        (product) => product.category === filters.category
+        (product) =>
+          product.category?.toLowerCase() ===
+          filters.category.toLowerCase()
       );
     }
 
@@ -147,7 +179,9 @@ export default function Shop() {
 
       <ShopPromotion />
 
-      <ShopCategories />
+      <div ref={categoriesSectionRef} className="scroll-mt-24">
+        <ShopCategories />
+      </div>
 
       {loading ? (
         <section className="flex items-center justify-center px-4 py-24">
@@ -160,7 +194,7 @@ export default function Shop() {
           </p>
         </section>
       ) : (
-        <ShopProducts products={filteredProducts} />
+          <ShopProducts products={filteredProducts} />
       )}
 
     </main>

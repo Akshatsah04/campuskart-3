@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const navigate = useNavigate();
+  const handleCategoryClick = (categoryName) => {
+  // Match the category names used by the Shop page
+  const category =
+    categoryName === "Stationary" ? "Stationery" : categoryName;
+
+  navigate(`/shop?category=${encodeURIComponent(category)}`);
+};
   const containerRef = useRef(null);
   const pinnedSectionRef = useRef(null);
 
@@ -261,6 +268,16 @@ export default function Hero() {
 
                     {/* Inner Card - handles graphics and hovers */}
                     <div
+                      role="link"
+                      tabIndex={0}
+                      aria-label={`Browse ${card.title}`}
+                      onClick={() => handleCategoryClick(card.title)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleCategoryClick(card.title);
+                        }
+                      }}
                       className={`w-[13vh] h-[18vh] min-w-[70px] min-h-[100px] max-w-[185px] max-h-[250px] sm:w-[22vh] sm:h-[30vh] sm:min-w-[120px] sm:min-h-[160px] rounded-[12px] sm:rounded-[26px] bg-gradient-to-br ${card.gradient} flex flex-col justify-between shadow-lg shadow-slate-900/8 transition-all duration-300 ease-out cursor-pointer hover:shadow-xl hover:shadow-slate-950/15 hover:scale-105 hover:-translate-y-3`}>
                       <img
                         src={card.image}
